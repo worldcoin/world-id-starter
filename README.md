@@ -1,10 +1,10 @@
 # World ID Starter Kit (Smart Contracts)
 
-**Easiest** way to get started with World ID **on-chain**. This repository contains the bare minimum requirements to build apps with [World ID](https://id.worlcoin.org), allowing you to easily add sybil-resistance and uniqueness features to your dApp.
+**Easiest** way to get started with World ID **on-chain**. This repository contains the minimum requirements to build web3 dApps with [World ID](#-about-world-id), allowing you to easily add sybil-resistance and uniqueness features to your dApp.
 
 This repository contains the smart contract code, and is built with the [Foundry](https://getfoundry.sh) toolkit. We also have a Hardhat version in the [world-id-starter-hardhat](https://github.com/worldcoin/world-id-starter-hardhat) repository.
 
-## 🗝 How to use
+## 🏃 Getting started
 
 Start with the `verifyAndExecute` function on the [`Contract.sol`](src/Contract.sol) file, which contains the basic World ID verification logic. You can rename this function as you choose (for example, we use `claim` on our airdrop example).
 
@@ -36,19 +36,29 @@ If your use-case doesn't require uniqueness, you can use them as "anonymous iden
 
 ## 🧑‍💻 Development & testing
 
-This repository uses the [Foundry](https://github.com/gakonst/foundry) smart contract toolkit. You can download the Foundry installer by running `curl -L https://foundry.paradigm.xyz | bash`, and then install the latest version by running `foundryup` on a new terminal window (additional instructions are available [on the Foundry repo](https://github.com/gakonst/foundry#installation)). You'll also need [Node.js](https://nodejs.org) if you're planning to run the automated tests.
+1. Install [Foundry](https://github.com/gakonst/foundry).
+    ```
+    curl -L https://foundry.paradigm.xyz | bash
+    foundryup # run on a new terminal window; installs latest version
+    ```
+2. Install [Node.js](https://nodejs.org/en/) v16 or above (required for tests). We recommend [nvm](https://github.com/nvm-sh/nvm) if you use multiple node versions.
+3. Install dependencies & build smart contracts
+    ```
+    make
+    ```
 
-Once you have everything installed, you can run `make` from the base directory to install all dependencies, and build the smart contracts.
+> ⚠️ Make sure you've run `make` instead of using Foundry directly! We need to build some of WorldID's dependencies in a specific way, and tests will fail otherwise.
 
-> Note: Make sure you've run `make` instead of using Foundry directly! We need to build some of WorldID's dependencies in a specific way, and tests will fail otherwise.
-
-### Running the tests
+### Running test suite
 
 This repository includes automated tests, which you can use to make sure your contract is working as expected before deploying it. Of course, any modifications you've made to the `Contract.sol` file will need to be reflected on the tests as well to make them work.
 
 If you've changed the type of the external nullifier, or the signal, you should look over the `src/test/helpers/InteractsWithWorldID.sol` and `src/test/scripts/generate-proof.js` to update them as well.
 
-Once you've done this, you can run the tests with `make test`.
+Once you've done this, you can run the tests,
+```
+make test
+```
 
 
 <!-- WORLD-ID-SHARED-README-TAG:START - Do not remove or modify this section directly -->

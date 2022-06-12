@@ -11,7 +11,7 @@ contract ContractTest is Test, InteractsWithWorldID {
     function setUp() public {
         setUpWorldID();
 
-        // update any constructor paramters you need here!
+        // update any constructor parameters you need here!
         yourContract = new Contract(worldID);
 
         vm.label(address(this), "Sender");
@@ -19,7 +19,7 @@ contract ContractTest is Test, InteractsWithWorldID {
     }
 
     function testCanCall() public {
-        registerIdentity();
+        registerIdentity(); // this simulates a World ID "verified" identity
 
         (uint256 nullifierHash, uint256[8] memory proof) = getProof(
             address(yourContract),
