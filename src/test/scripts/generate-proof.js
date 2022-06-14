@@ -32,7 +32,7 @@ function generateSemaphoreWitness(
 }
 
 // update the parameters here if changing the signal
-async function main(externalNullifierAddress, signalAddress) {
+async function main(signalAddress, externalNullifierAddress) {
     const identity = new ZkIdentity(Strategy.MESSAGE, 'test-identity')
     const identityCommitment = identity.genIdentityCommitment()
 
