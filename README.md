@@ -12,7 +12,7 @@ Start with the `verifyAndExecute` function on the [`Contract.sol`](src/Contract.
 
 The action ID (also called "external nullifier") makes sure that the proof your contract receives was generated for it (more on [Action IDs](https://id.worldcoin.org/docs/about/glossary#action-id)). A sensible default is to use the address of your contract (which will always be unique), but feel free to update if you have a unique use-case. You should be changing the `abi.encodePacked(address(this)).hashToField()` line, updating the parameters inside the `encodePacked` call.
 
-> Note: Make sure you're passing the correct Action ID when initializing the JS widget! The generated proof will be invalid otherwise.
+> **Note** Make sure you're passing the correct Action ID when initializing the JS widget! The generated proof will be invalid otherwise.
 
 ### Setting your signal
 
@@ -20,7 +20,7 @@ The signal adds an additional layer of protection to the World ID Proof, it make
 
 To update the signal, you should change the `input` on the `abi.encodePacked(input).hashToField()` line. You should provide the exact same string when initializing the JS widget, to make sure the proof includes them.
 
-> Note: The `hashToField` part is really important, as validation will fail otherwise even with the right parameters. Make sure to include it!
+> **Note** The `hashToField` part is really important, as validation will fail otherwise even with the right parameters. Make sure to include it!
 
 ### About nullifiers
 
@@ -47,7 +47,7 @@ If your use-case doesn't require uniqueness, you can use them as "anonymous iden
     make
     ```
 
-> ⚠️ Make sure you've run `make` instead of using Foundry directly! We need to build some of WorldID's dependencies in a specific way, and tests will fail otherwise.
+> **Warning** Make sure you've run `make` instead of using Foundry directly! We need to build some of WorldID's dependencies in a specific way, and tests will fail otherwise.
 
 ### Running test suite
 
