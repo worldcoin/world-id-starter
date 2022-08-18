@@ -28,6 +28,23 @@ _Nullifiers_ are what enforces uniqueness in World ID. You can generate multiple
 
 If your use-case doesn't require uniqueness, you can use them as "anonymous identifiers", linking users between different signals (for example, allowing them to change which address they've verified in a social network). To do this, update the `nullifierHashes` mapping to point to some sort of identifier instead of a boolean. See [this project](https://github.com/m1guelpf/lens-humancheck/blob/main/src/HumanCheck.sol) as an example.
 
+
+## 🗝 Usage instructions
+
+1. End users will need a verified identity, which can be obtained through our [Simulator](https://simulator.worldcoin.org) ([see docs for more info](https://id.worldcoin.org/test)). In production, this would be obtained by verifying with an orb.
+
+2. Use the [JS widget](https://id.worldcoin.org/docs/js) to prompt the user with verification (make sure you're providing the correct [signal](#setting-your-signal) and [action ID](#setting-your-action-id)). Upon acceptance, you'll get a `merkle_root`, `nullifier_hash` and `proof`.
+
+3. The ZKP (attribute `proof`) is a `uint256[8]` array and your smart contract expects it that way. For easier handling, the JS widget will return the proof encoded. Unpack your proof before sending it to your smart contract. 
+
+```js
+import { defaultAbiCoder as abi } from "@ethers/utils";
+const unpackedProof = abi.decode(["uint256[8]"], proof)[0];
+// You can now pass your unpackedProof to your smart contract
+```
+
+4. Use the obtained parameters, along with any inputs your contract needs (which [should be included in the signal](#setting-your-signal)), to call your smart contract!
+
 ## 🚀 Deployment
 
 1. If you've added any parameters to your constructor or renamed the contract, you should update the `scripts/deploy.js` script accordingly.
