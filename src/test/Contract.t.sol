@@ -12,7 +12,7 @@ contract ContractTest is Test, InteractsWithWorldID {
         setUpWorldID();
 
         // update any constructor parameters you need here!
-        yourContract = new Contract(worldID);
+        yourContract = new Contract(worldID, "wid_test");
 
         vm.label(address(this), "Sender");
         vm.label(address(yourContract), "Contract");
@@ -22,8 +22,8 @@ contract ContractTest is Test, InteractsWithWorldID {
         registerIdentity(); // this simulates a World ID "verified" identity
 
         (uint256 nullifierHash, uint256[8] memory proof) = getProof(
-            address(yourContract),
-            address(this)
+            address(this),
+            "wid_test"
         );
         yourContract.verifyAndExecute(
             address(this),
@@ -39,8 +39,8 @@ contract ContractTest is Test, InteractsWithWorldID {
         registerIdentity();
 
         (uint256 nullifierHash, uint256[8] memory proof) = getProof(
-            address(yourContract),
-            address(this)
+            address(this),
+            "wid_test"
         );
 
         yourContract.verifyAndExecute(
@@ -67,8 +67,8 @@ contract ContractTest is Test, InteractsWithWorldID {
 
         uint256 root = getRoot();
         (uint256 nullifierHash, uint256[8] memory proof) = getProof(
-            address(yourContract),
-            address(this)
+            address(this),
+            "wid_test"
         );
 
         vm.expectRevert(abi.encodeWithSignature("InvalidProof()"));
@@ -86,8 +86,8 @@ contract ContractTest is Test, InteractsWithWorldID {
         registerIdentity();
 
         (uint256 nullifierHash, uint256[8] memory proof) = getProof(
-            address(yourContract),
-            address(this)
+            address(this),
+            "wid_test"
         );
 
         uint256 root = getRoot();
@@ -106,8 +106,8 @@ contract ContractTest is Test, InteractsWithWorldID {
         registerIdentity();
 
         (uint256 nullifierHash, uint256[8] memory proof) = getProof(
-            address(yourContract),
-            address(this)
+            address(this),
+            "wid_test"
         );
 
         // this changes the proof, invalidating it

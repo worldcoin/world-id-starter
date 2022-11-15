@@ -44,7 +44,7 @@ contract InteractsWithWorldID {
         return abi.decode(returnData, (uint256));
     }
 
-    function getProof(address externalNullifier, address signal)
+    function getProof(address signal, string memory actionId)
         internal
         returns (uint256, uint256[8] memory proof)
     {
@@ -59,7 +59,7 @@ contract InteractsWithWorldID {
         ffiArgs[3] = address(signal).toString();
 
         // update your external nullifier here
-        ffiArgs[4] = address(externalNullifier).toString();
+        ffiArgs[4] = actionId;
 
         bytes memory returnData = wldVM.ffi(ffiArgs);
 
