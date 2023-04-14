@@ -12,7 +12,7 @@ contract ContractTest is Test, InteractsWithWorldID {
         setUpWorldID();
 
         // update any constructor parameters you need here!
-        yourContract = new Contract(worldID, "wid_test");
+        yourContract = new Contract(worldID, "app_1234", "wid_test");
 
         vm.label(address(this), "Sender");
         vm.label(address(yourContract), "Contract");
@@ -23,6 +23,7 @@ contract ContractTest is Test, InteractsWithWorldID {
 
         (uint256 nullifierHash, uint256[8] memory proof) = getProof(
             address(this),
+            "app_1234",
             "wid_test"
         );
         yourContract.verifyAndExecute(
@@ -40,6 +41,7 @@ contract ContractTest is Test, InteractsWithWorldID {
 
         (uint256 nullifierHash, uint256[8] memory proof) = getProof(
             address(this),
+            "app_1234",
             "wid_test"
         );
 
@@ -68,6 +70,7 @@ contract ContractTest is Test, InteractsWithWorldID {
         uint256 root = getRoot();
         (uint256 nullifierHash, uint256[8] memory proof) = getProof(
             address(this),
+            "app_1234",
             "wid_test"
         );
 
@@ -87,6 +90,7 @@ contract ContractTest is Test, InteractsWithWorldID {
 
         (uint256 nullifierHash, uint256[8] memory proof) = getProof(
             address(this),
+            "app_1234",
             "wid_test"
         );
 
@@ -107,6 +111,7 @@ contract ContractTest is Test, InteractsWithWorldID {
 
         (uint256 nullifierHash, uint256[8] memory proof) = getProof(
             address(this),
+            "app_1234",
             "wid_test"
         );
 

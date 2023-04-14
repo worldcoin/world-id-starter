@@ -44,12 +44,13 @@ contract InteractsWithWorldID {
         return abi.decode(returnData, (uint256));
     }
 
-    function getProof(address signal, string memory actionId)
-        internal
-        returns (uint256, uint256[8] memory proof)
-    {
+    function getProof(
+        address signal,
+        string memory appId,
+        string memory action
+    ) internal returns (uint256, uint256[8] memory proof) {
         // increase the lenght of the array if you have multiple parameters as signal
-        string[] memory ffiArgs = new string[](5);
+        string[] memory ffiArgs = new string[](6);
         ffiArgs[0] = "node";
         ffiArgs[1] = "--no-warnings";
         ffiArgs[2] = "src/test/scripts/generate-proof.js";
@@ -58,8 +59,8 @@ contract InteractsWithWorldID {
         // make sure to update the array index for everything after too!
         ffiArgs[3] = address(signal).toString();
 
-        // update your external nullifier here
-        ffiArgs[4] = actionId;
+        ffiArgs[4] = appId;
+        ffiArgs[5] = action;
 
         bytes memory returnData = wldVM.ffi(ffiArgs);
 

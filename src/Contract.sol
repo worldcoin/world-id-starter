@@ -17,8 +17,8 @@ contract Contract {
     /// @dev The World ID instance that will be used for verifying proofs
     IWorldID internal immutable worldId;
 
-    /// @dev The application's action ID
-    uint256 internal immutable actionId;
+    /// @dev The contract's external nullifier hash
+    uint256 internal immutable externalNullifier;
 
     /// @dev The World ID group ID (always 1)
     uint256 internal immutable groupId = 1;
@@ -27,10 +27,17 @@ contract Contract {
     mapping(uint256 => bool) internal nullifierHashes;
 
     /// @param _worldId The WorldID instance that will verify the proofs
-    /// @param _actionId The action ID for your application
-    constructor(IWorldID _worldId, string memory _actionId) {
+    /// @param _appId The World ID app ID
+    /// @param _actionId The World ID action ID
+    constructor(
+        IWorldID _worldId,
+        string memory _appId,
+        string memory _actionId
+    ) {
         worldId = _worldId;
-        actionId = abi.encodePacked(_actionId).hashToField();
+        externalNullifier = abi
+            .encodePacked(abi.encodePacked(_appId).hashToField(), _actionId)
+            .hashToField();
     }
 
     /// @param signal An arbitrary input from the user, usually the user's wallet address (check README for further details)
@@ -53,7 +60,7 @@ contract Contract {
             groupId,
             abi.encodePacked(signal).hashToField(),
             nullifierHash,
-            actionId,
+            externalNullifier,
             proof
         );
 

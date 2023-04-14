@@ -32,7 +32,7 @@ function generateSemaphoreWitness(
 }
 
 // update the parameters here if changing the signal
-async function main(signalAddress, actionId) {
+async function main(signalAddress, appId, action) {
 	const identity = new ZkIdentity(Strategy.MESSAGE, "test-identity");
 	const identityCommitment = identity.genIdentityCommitment();
 
@@ -45,7 +45,12 @@ async function main(signalAddress, actionId) {
 			[identityCommitment],
 			identityCommitment
 		),
-		hashBytes(pack(["string"], [actionId])),
+		hashBytes(
+			pack(
+				["uint256", "string"],
+				[hashBytes(pack(["string"], [appId])), action]
+			)
+		),
 		// update here if changing the signal (you might need to wrap in a `pack()` call if there are multiple arguments), see above
 		signalAddress
 	);
