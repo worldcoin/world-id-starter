@@ -3,6 +3,6 @@ src = 'src'
 out = 'out'
 libs = ['lib']
 ffi = true
-remappings = ['worldcoin/world-id/=lib/world-id-example-airdrop/src/']
+remappings = []
 
 # See more config options https://github.com/foundry-rs/foundry/tree/master/config

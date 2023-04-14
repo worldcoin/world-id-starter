@@ -3,7 +3,7 @@ pragma solidity ^0.8.10;
 
 import {Vm} from "forge-std/Vm.sol";
 import {IWorldID} from "../../interfaces/IWorldID.sol";
-import {Semaphore} from "worldcoin/world-id/Semaphore.sol";
+import {Semaphore} from "world-id-contracts/Semaphore.sol";
 import {TypeConverter} from "./TypeConverter.sol";
 
 contract InteractsWithWorldID {
