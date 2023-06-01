@@ -20,10 +20,9 @@ jobs:
         with:
           version: nightly
 
-      - uses: actions/setup-node@v2
+      - uses: dafnik/setup-node-pnpm@v1
         with:
-          node-version: "17"
-          cache: "npm"
+          node: "17"
 
       - name: Install Dependencies
         run: make install
