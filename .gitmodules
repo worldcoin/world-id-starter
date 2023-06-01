@@ -1,7 +1,3 @@
 [submodule "lib/forge-std"]
 	path = lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
-[submodule "lib/world-id-contracts"]
-	path = lib/world-id-contracts
-	url = https://github.com/worldcoin/world-id-contracts
-	branch = 985aba6
