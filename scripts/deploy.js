@@ -2,6 +2,7 @@ import fs from "fs";
 import ora from "ora";
 import dotenv from "dotenv";
 import readline from "readline";
+import select from "cli-select";
 import { polygonMumbai } from "viem/chains";
 import { privateKeyToAccount } from "viem/accounts";
 import { http, createWalletClient, createPublicClient } from "viem";
@@ -44,13 +45,46 @@ const ask = async (question) => {
 };
 
 async function main() {
+	const chainId = await client.getChainId();
+
+	const selectedChain = await select({
+		values: {
+			1: "Ethereum Mainnet",
+			137: "Polygon Mainnet",
+			10: "Optimism Mainnet",
+			5: "Ethereum Testnet (goerli)",
+			80001: "Polygon Testnet (mumbai)",
+		},
+	});
+
+	if (chainId != selectedChain.id) {
+		console.error(
+			"The chain of your RPC_URL does not match the chain you selected. Please check your RPC_URL and try again."
+		);
+	}
+
+	const addrKey = (() => {
+		switch (selectedChain.id.toString()) {
+			case "1":
+				return "id.worldcoin.eth";
+			case "137":
+				return "polygon.id.worldcoin.eth";
+			case "10":
+				return "optimism.id.worldcoin.eth";
+			case "5":
+				return "goerli.id.worldcoin.eth";
+			case "80001":
+				return "mumbai.id.worldcoin.eth";
+			default:
+				throw new Error(`Unknown chain ${selectedChain.id}`);
+		}
+	})();
+
 	const worldIDAddress = await fetch(
 		"https://developer.worldcoin.org/api/v1/contracts"
 	)
 		.then((res) => res.json())
-		.then(
-			(res) => res.find(({ key }) => key == "staging.semaphore.wld.eth").value
-		);
+		.then((res) => res.find(({ key }) => key == addrKey).value);
 
 	// if you need any extra constructor parameters, add them to this array in order
 	const inputs = [await ask("App ID: "), await ask("Action: ")];
