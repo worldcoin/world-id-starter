@@ -47,6 +47,7 @@ const ask = async (question) => {
 async function main() {
 	const chainId = await client.getChainId();
 
+	console.log("Select a chain to deploy to (use arrow keys to navigate):");
 	const selectedChain = await select({
 		values: {
 			1: "Ethereum Mainnet",
