@@ -10,13 +10,13 @@ Start with the `verifyAndExecute` function on the [`Contract.sol`](src/Contract.
 
 ### Setting your Action ID
 
-The action ID (also called "external nullifier") makes sure that the proof your contract receives was generated for it (more on [Action IDs](https://id.worldcoin.org/docs/about/glossary#action-id)). A sensible default is to use the address of your contract (which will always be unique), but feel free to update if you have a unique use-case. You should be changing the `abi.encodePacked(address(this)).hashToField()` line, updating the parameters inside the `encodePacked` call.
+The action ID (also called "external nullifier") makes sure that the proof your contract receives was generated for it (more on [Action IDs](https://docs.worldcoin.org/advanced/on-chain#custom-actions)). A sensible default is to use the address of your contract (which will always be unique), but feel free to update if you have a unique use-case. You should be changing the `abi.encodePacked(address(this)).hashToField()` line, updating the parameters inside the `encodePacked` call.
 
 > **Note** Make sure you're passing the correct Action ID when initializing the JS widget! The generated proof will be invalid otherwise.
 
 ### Setting your signal
 
-The signal adds an additional layer of protection to the World ID Proof, it makes sure that the input provided to the contract is the one the person who generated the proof intended (more on [signals](https://id.worldcoin.org/docs/about/glossary#signal)). By default this contract expects an address (`receiver`), but you can update it to be any arbitrary string.
+The signal adds an additional layer of protection to the World ID Proof, it makes sure that the input provided to the contract is the one the person who generated the proof intended (more on [signals](https://docs.worldcoin.org/advanced/on-chain#custom-signals)). By default this contract expects an address (`receiver`), but you can update it to be any arbitrary string.
 
 To update the signal, you should change the `input` on the `abi.encodePacked(input).hashToField()` line. You should provide the exact same string when initializing the JS widget, to make sure the proof includes them.
 
@@ -30,15 +30,15 @@ If your use-case doesn't require uniqueness, you can use them as "anonymous iden
 
 ## 🗝 Usage instructions
 
-1. End users will need a verified identity, which can be obtained through our [Simulator](https://simulator.worldcoin.org) ([see docs for more info](https://id.worldcoin.org/test)). In production, this would be obtained by verifying with an orb.
+1. End users will need a verified identity, which can be obtained through our [Simulator](https://simulator.worldcoin.org) ([see docs for more info](https://docs.worldcoin.org/test)). In production, this would be obtained by verifying with an orb.
 
-2. Use the [JS widget](https://id.worldcoin.org/docs/js) to prompt the user with verification (make sure you're providing the correct [signal](#setting-your-signal) and [action ID](#setting-your-action-id)). Upon acceptance, you'll get a `merkle_root`, `nullifier_hash` and `proof`.
+2. Use the [IDKit widget](https://docs.worldcoin.org/idkit) to prompt the user with verification (make sure you're providing the correct [signal](#setting-your-signal) and [action ID](#setting-your-action-id)). Upon acceptance, you'll get a `merkle_root`, `nullifier_hash` and `proof`.
 
 3. The ZKP (attribute `proof`) is a `uint256[8]` array and your smart contract expects it that way. For easier handling, the JS widget will return the proof encoded. Unpack your proof before sending it to your smart contract.
 
 ```js
-import { defaultAbiCoder as abi } from "@ethers/utils";
-const unpackedProof = abi.decode(["uint256[8]"], proof)[0];
+import { decodeAbiParameters } from "viem";
+const unpackedProof = decodeAbiParameters([{ type: "uint256[8]" }], proof)[0];
 // You can now pass your unpackedProof to your smart contract
 ```
 
@@ -47,7 +47,7 @@ const unpackedProof = abi.decode(["uint256[8]"], proof)[0];
 ## 🚀 Deployment
 
 1. If you've added any parameters to your constructor or renamed the contract, you should update the `scripts/deploy.js` script accordingly.
-2. Run `cp .env.example .env` to create your environment file, and add a `RPC_URL` for the network you want to deploy (we currently **only support the Polygon Mumbai Testnet**) and a `PRIVATE_KEY` for the deployer wallet.
+2. Run `cp .env.example .env` to create your environment file, and add a `RPC_URL` for the network you want to deploy and a `PRIVATE_KEY` for the deployer wallet.
 3. Run `make deploy` to deploy your contract.
 
 ## 🧑‍💻 Development & testing
@@ -59,7 +59,7 @@ curl -L https://foundry.paradigm.xyz | bash
 foundryup # run on a new terminal window; installs latest version
 ```
 
-2. Install [Node.js](https://nodejs.org/en/) v16 or above (required for tests). We recommend [nvm](https://github.com/nvm-sh/nvm) if you use multiple node versions.
+2. Install [Node.js](https://nodejs.org/en/) v16 or above. We recommend [nvm](https://github.com/nvm-sh/nvm) if you use multiple node versions.
 3. Install dependencies & build smart contracts
 
 ```
@@ -67,18 +67,6 @@ make
 ```
 
 > **Warning** Make sure you've run `make` instead of using Foundry directly! We need to build some of WorldID's dependencies in a specific way, and tests will fail otherwise.
-
-### Running test suite
-
-This repository includes automated tests, which you can use to make sure your contract is working as expected before deploying it. Of course, any modifications you've made to the `Contract.sol` file will need to be reflected on the tests as well to make them work.
-
-If you've changed the type of the external nullifier, or the signal, you should look over the `src/test/helpers/InteractsWithWorldID.sol` and `src/test/scripts/generate-proof.js` to update them as well.
-
-Once you've done this, you can run the tests,
-
-```
-make test
-```
 
 <!-- WORLD-ID-SHARED-README-TAG:START - Do not remove or modify this section directly -->
 <!-- The contents of this file are inserted to all World ID repositories to provide general context on World ID. -->
