@@ -1,3 +1,6 @@
+> [!WARNING]
+> This repository is no longer maintained. See [world-id-onchain-template](https://github.com/worldcoin/world-id-onchain-template) for an example of on-chain World ID usage.
+
 # World ID Starter Kit (Smart Contracts)
 
 **Easiest** way to get started with World ID **on-chain**. This repository contains the minimum requirements to build web3 dApps with [World ID](#-about-world-id), allowing you to easily add sybil-resistance and uniqueness features to your dApp.
